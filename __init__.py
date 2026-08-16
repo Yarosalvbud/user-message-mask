@@ -18,7 +18,7 @@ def _build_python_path() -> Path:
             f"Virtual environment not found in {plugin_dir}"
         )
 
-    return (venv_candidates[0] / "bin" / "python").resolve()
+    return venv_candidates[0] / "bin" / "python"
 
 def _build_decoder_path() -> Path:
     plugin_dir = Path(__file__).resolve().parent

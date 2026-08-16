@@ -9,6 +9,9 @@ import torch
 
 import os
 
+from pathlib import Path
+from dotenv import load_dotenv
+
 from opf._common.label_space import (
     resolve_label_space_from_config,
 )
@@ -28,6 +31,12 @@ class OPFRuntime:
     decoder: object
 
 def _build_opf_runtime() -> OPFRuntime:
+    plugin_dir = Path(__file__).resolve().parent
+
+    load_dotenv(
+        plugin_dir / ".env"
+    )
+
     model_config = {
         "model_type": os.environ["OPF_MODEL_TYPE"],
         "inference_contract_version": int(
@@ -224,9 +233,7 @@ def _redact_text(
         )
 
         result.append(
-            result.append(
-                f"<{label.upper()}>"
-            )
+            f"<{label.upper()}>"
         )
 
         cursor = end
@@ -274,11 +281,11 @@ if __name__ == "__main__":
 
     text = sys.stdin.read()
 
+    opf_runtime = _build_opf_runtime()
+
     probabilities = _call_privacy_filter(
         text
     )
-
-    opf_runtime = _build_opf_runtime()
 
     spans = _decode_spans(
         text,
