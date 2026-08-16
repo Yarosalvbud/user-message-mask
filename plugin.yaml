@@ -1,0 +1,6 @@
+name: user-message-mask
+version: "0.1.0"
+description: Transform incoming user messages before they reach the agent
+
+provides_hooks:
+  - transform_user_message
